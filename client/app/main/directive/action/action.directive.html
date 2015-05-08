@@ -1,0 +1,13 @@
+<header>{{ action.name }}</header>
+<p>{{ action.title }}</p>
+<p>{{ action.description }}</p>
+<p>{{ action.content }}</p>
+<p>{{ action.children || "No children" }}</p>
+<p>{{ action.duration_type }}</p>
+<p>{{ action.type }}</p>
+<p>{{ action.last_updated }}</p>
+<p>{{ action.active }}</p>
+<form class="action-node" ng-submit="deleteAction(action)">
+    <input class="btn btn-primary" type="submit" value="Delete">
+  </form>
+<!-- <action-directive action="action"/> -->
