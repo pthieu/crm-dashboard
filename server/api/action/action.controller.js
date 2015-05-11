@@ -22,7 +22,7 @@ exports.show = function(req, res) {
 
 // Creates a new action in the DB.
 exports.create = function(req, res) {
-  var action = new Action(_.merge({content:(new Date).getTime(), nest_level:0}, req.body));
+  var action = new Action(_.merge({content:(new Date()).getTime(), nest_level:0}, req.body));
   action.save(req.body, function(err, action) {
     if(err) { return handleError(res, err); }
     return res.json(201, action);

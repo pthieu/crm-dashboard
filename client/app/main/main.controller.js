@@ -42,6 +42,7 @@ angular.module('crmDashboardApp')
  
       // Update array with any new or deleted items pushed from the socket
       socket.syncUpdates('action', $scope.actions, function(event, action, actions) {
+        console.log([event, action, actions]); // TODO: remove this, jshint does not like unused variables
         // This callback is fired after the actions array is updated by the socket listeners
       });
     });

@@ -10,8 +10,8 @@ angular.module('crmDashboardApp')
       restrict: 'E',
       link: function (scope, element, attrs) {
         scope.deleteAction = function (_action) {
-            var id = _action._id
-            debugger
+          console.log(element, attrs);
+            var id = _action._id;
             $http.delete('/api/actions', {data: {'id':id}});
         };
       }

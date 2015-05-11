@@ -1,7 +1,17 @@
+# Generic Files
+*.swp
+
+# Packages
 node_modules
-public
+client/bower_components
+
+# Compilation
+dist
 .tmp
 .idea
-client/bower_components
-dist
+
+# Actual code
+public
+
+# This is for local config
 /server/config/local.env.js
