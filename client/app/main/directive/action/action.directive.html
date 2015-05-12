@@ -11,6 +11,6 @@
   <input class="btn btn-primary" type="submit" value="Delete">
 </form>
 <!-- <div ng-repeat="child in actionNode.children"> -->
-<div ng-repeat="child in actionNode.children"  ng-if="actionNode.children.length > 0">
+<div ng-repeat="child in actionNode.children"  ng-if="actionNode.children.length > 0" ng-style="{'margin-left': ({{actionNode.nest_level}}+1)*30+'px'}">
   <action-directive action-ID="child" action-list="actionList" />
 </div>

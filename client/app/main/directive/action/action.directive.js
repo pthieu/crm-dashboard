@@ -24,6 +24,7 @@ angular.module('crmDashboardApp')
           // Find for already called action list
           scope.findAction = function (_id, _list) {
             scope.actionNode = _.findWhere(_list, {_id:_id})
+            debugger;
           };
 
           scope.findAction(scope.actionId, scope.actionList);
