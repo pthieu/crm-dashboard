@@ -7,6 +7,5 @@ module.exports = {
   mongo: {
     uri: 'mongodb://localhost/crmdashboard-dev'
   },
-
   seedDB: false
 };

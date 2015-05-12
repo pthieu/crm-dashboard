@@ -1,12 +1,14 @@
 'use strict';
 
+//INCLUDE: bower_component
 angular.module('crmDashboardApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'RecursionHelper'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

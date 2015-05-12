@@ -4,8 +4,8 @@
 <div class="container">
   <!-- <iframe width="100%" height="410" src="//www.youtube.com/embed/DcJFdCmN98s" frameborder="0"></iframe> -->
   <ul class="action-list">
-    <li ng-repeat="action in actions">
-      <action-directive action="action" />
+    <li ng-repeat="action in actions" ng-if="action.nest_level === 0">
+      <action-directive action-Id="action._id" action-list="actions"/>
     </li>
   </ul>
   <form class="comment-form" ng-submit="addAction()" name="actionForm">
