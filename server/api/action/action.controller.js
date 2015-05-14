@@ -3,6 +3,29 @@
 var _ = require('lodash');
 var Action = require('./action.model');
 
+Action.schema.pre('remove', function (next) {
+  var deleted = this; //referring to action being deleted
+  // Remove child actions -- go through each child of the delete actions' children array and delete them
+  deleted.children.forEach(function(child){
+    Action.findOne({'_id':child}).remove();
+  });
+
+  // TODO: should this be placed into next or post?
+  // Remove parent (should only have one parent) by looking for any actions that have the deleted action's ID in children array
+  Action.findOne({'children': deleted.id}, function(err, doc){
+    if (err) { return console.log(err); }
+
+    if (!doc) return; // no doc found (parent of deleted), so return and continue with life
+
+    doc.children.pull(deleted.id);
+    doc.save(function(err) {
+      if (err) { return console.log(err); }
+    });
+  });
+
+  next();
+});
+
 // Get list of actions
 exports.index = function(req, res) {
   Action.find(function (err, actions) {
@@ -50,16 +73,16 @@ exports.destroy = function(req, res) {
   var promise = Action.findById(actionID).exec(function (err, action) {
     if(err) { return handleError(res, err); }
     if(!action) { return res.send(404); }
-    // var promise = action.remove(function(err) {
-    //   if(err) { return handleError(res, err); }
-    //   return res.send(204);
-    // });
+    var promise = action.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.send(204);
+    });
   });
-  promise.then(function (action) {
-    return Action.remove({'_id': action.id}).exec();
-  }).then(function (err, action, something) {
-    debugger;
-  });
+  // promise.then(function (action) {
+  //   return Action.remove({'_id': action.id}).exec();
+  // }).then(function (err, action, something) {
+  //   debugger;
+  // });
 };
 
 function handleError(res, err) {
