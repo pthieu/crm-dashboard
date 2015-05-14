@@ -45,15 +45,20 @@ exports.update = function(req, res) {
 
 // Deletes a action from the DB.
 exports.destroy = function(req, res) {
-  console.log(req)
-  var action = new Action(_.merge({}, req.body));
-  action.findById(req.body.id, function (err, action) {
+  var actionID = req.body.id; // TODO: maybe try to do some auth here or in the chained routing?
+
+  var promise = Action.findById(actionID).exec(function (err, action) {
     if(err) { return handleError(res, err); }
     if(!action) { return res.send(404); }
-    action.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
+    // var promise = action.remove(function(err) {
+    //   if(err) { return handleError(res, err); }
+    //   return res.send(204);
+    // });
+  });
+  promise.then(function (action) {
+    return Action.remove({'_id': action.id}).exec();
+  }).then(function (err, action, something) {
+    debugger;
   });
 };
 

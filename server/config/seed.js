@@ -66,6 +66,7 @@ Action.find({}).remove(function () {
     title: 'Test action child 1',
     description: 'Test action child description',
     content: 1430712335028,
+    children: ['000000000000000000000004'],
     nest_level: 1,
     duration_type: 2,
     type: 1,
@@ -77,6 +78,16 @@ Action.find({}).remove(function () {
     description: 'Test action child description',
     content: 1430712335028,
     nest_level: 1,
+    duration_type: 2,
+    type: 1,
+    active: true
+  });
+  Action.create({
+    _id: '000000000000000000000004',
+    title: 'Test action child 1',
+    description: 'Test action child description',
+    content: 1430712335028,
+    nest_level: 2,
     duration_type: 2,
     type: 1,
     active: true
