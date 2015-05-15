@@ -8,7 +8,8 @@ angular.module('crmDashboardApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'RecursionHelper'
+  'RecursionHelper',
+  'angularMoment'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

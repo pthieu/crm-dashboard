@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('crmDashboardApp')
-  .directive('actionDirective', function ($http, RecursionHelper) {
+  .directive('actionDirective', function ($http, $interval, RecursionHelper) {
     return {
       scope: {
         actionId: '=', // html:action-node, js:actionNode
         actionList: '='
       },
       templateUrl: 'app/main/directive/action/action.directive.html',
+      replace: true,
       restrict: 'E',
       compile: function (element) {
         return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
@@ -28,8 +29,13 @@ angular.module('crmDashboardApp')
           scope.findAction = function (_id, _list) {
             scope.actionNode = _.findWhere(_list, {_id:_id})
           };
-
           scope.findAction(scope.actionId, scope.actionList);
+
+          function calculateTimeSince(){
+            scope.fromNow = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
+            // scope.fromNow = moment().diff(scope.actionNode.content, 'days') // will always output in days
+          }
+          $interval(calculateTimeSince, 1000);
         });
       }
     };

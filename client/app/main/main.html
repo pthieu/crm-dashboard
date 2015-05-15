@@ -3,17 +3,17 @@
  
 <div class="container">
   <!-- <iframe width="100%" height="410" src="//www.youtube.com/embed/DcJFdCmN98s" frameborder="0"></iframe> -->
-  <ul class="action-list">
-    <li ng-repeat="action in actions" ng-if="action.nest_level === 0">
+  <div class="action-list">
+    <div class="action-wrapper" ng-repeat="action in actions" ng-if="action.nest_level === 0">
       <action-directive action-Id="action._id" action-list="actions"/>
-    </li>
-  </ul>
+    </div>
+  </div>
   <form class="comment-form" ng-submit="addAction()" name="actionForm">
     Title: <input type="text" ng-model="newActionTitle"></input>
     Description: <input type="text" ng-model="newActionDescription"></input>
     Duration Type: <input type="text" ng-model="newActionDurationType"></input>
     Type: <input type="text" ng-model="newActionType"></input>
-    <input class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" value="Post">
+    <input class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" value="New Parent">
   </form>
   <form class="comment-form" ng-submit="addComment()" name="commentForm">
     <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment" required></textarea>
