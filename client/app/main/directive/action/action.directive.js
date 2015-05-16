@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('crmDashboardApp')
-  .directive('actionDirective', function ($http, $interval, RecursionHelper) {
+  .directive('actionDirective', function ($http, $interval, $timeout, RecursionHelper) {
     return {
       scope: {
         actionId: '=', // html:action-node, js:actionNode
@@ -31,11 +31,12 @@ angular.module('crmDashboardApp')
           };
           scope.findAction(scope.actionId, scope.actionList);
 
-          function calculateTimeSince(){
+          // Declare and initialize self-invoking function
+          (function calculateTimeSince(){
             scope.fromNow = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
             // scope.fromNow = moment().diff(scope.actionNode.content, 'days') // will always output in days
-          }
-          $interval(calculateTimeSince, 1000);
+            $timeout(calculateTimeSince, 1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
+          })();
         });
       }
     };

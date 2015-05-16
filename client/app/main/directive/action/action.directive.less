@@ -1,17 +1,30 @@
-.action-wrapper {
+.border-bottom {
+  border-bottom: 1px solid #aaa;
+}
+
+.border-top {
+  border-top: 1px solid #aaa;
+}
+
+.action-node-wrapper {
   padding-left: 30px;
   .action-node {
-    h3 {
-      border-bottom: 1px solid #aaa;
-    }
-    h5 {
-      font-style: italic;
-    }
+  	.title{
+  		border-bottom: 1px solid #aaa;
+  		padding-bottom:10px;
+  	}
   }
 }
-.action-list
-{
-	>.action-wrapper{
-		padding-left:0;
-	}
+
+.action-wrapper {
+  >.action-node-wrapper {
+    padding-left: 0;
+  }
+  .action-node{
+  	padding-right:0;
+  }
+}
+
+.nopadding-right {
+  padding-right: 0;
 }

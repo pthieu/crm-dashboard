@@ -1,25 +1,19 @@
-<div class="action-node">
-  <header>{{ actionNode.name }}</header>
-  <div class="row">
-    <h3 class="col-md-12">{{ actionNode.title }}</h2>
-    <h5 class="col-md-12">{{ actionNode.description }}</h5>
-  </div>
-  <div class="row">
-    <div class="col-md-3">Time Since: {{fromNow}}</div>
-    <div class="col-md-3">Content: {{ actionNode.content}}</div>
-    <div class="col-md-3">Duration Type:{{ actionNode.duration_type }}</div>
-    <div class="col-md-3">Type: {{ actionNode.type }}</div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      {{actionNode.children.length > 0 ? actionNode.children : "No children" }}
+<div class="action-node col-md-12">
+  <div class="row action" ng-mouseenter="hover=true" ng-mouseleave="hover=false">
+    <div class="row">
+      <h3 class="col-md-12 title">{{ actionNode.title }}</h3>
     </div>
-    <form class="pull-right" ng-submit="deleteAction(actionNode)">
-      <input class="btn btn-primary" type="submit" value="Delete">
-    </form>
+    <div class="col-md-12 pull-right text-right nopadding-right">
+      <div class="row">
+        <h1 class="col-md-12 text-right">{{fromNow}}</h1>
+      </div>
+      <div class="row" ng-show="hover">
+        <button class="btn btn-primary" type="submit" ng-click="deleteAction(actionNode)">Delete</button>
+        <button class="btn btn-primary" type="submit" ng-click="newChildActionAction(actionNode)">New Child</button>
+      </div>
+    </div>
   </div>
-
-  <div class="action-wrapper" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
+  <div class="action-node-wrapper" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
     <!-- <div class="row" ng-repeat="child in actionNode.children"  ng-if="actionNode.children.length > 0" ng-style="{'margin-left': ({{actionNode.nest_level}}+1)*30+'px'}"> -->
     <action-directive action-ID="child" action-list="actionList" />
   </div>

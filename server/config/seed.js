@@ -52,43 +52,39 @@ var Action = require('../api/action/action.model');
 Action.find({}).remove(function () {
   Action.create({
     _id: '000000000000000000000001',
-    title: 'Test action title',
-    description: 'Test action description',
+    title: 'Number of days without an accident',
+    description: '',
     content: 1430712335028,
     children:['000000000000000000000002', '000000000000000000000003'],
     nest_level: 0,
-    duration_type: 2,
     type: 1,
     active: true
   });
   Action.create({
     _id: '000000000000000000000002',
-    title: 'Test action child 1',
-    description: 'Test action child description',
+    title: 'Number of days without a falling',
+    description: '',
     content: 1430712335028,
     children: ['000000000000000000000004'],
     nest_level: 1,
-    duration_type: 2,
     type: 1,
     active: true
   });
   Action.create({
     _id: '000000000000000000000003',
-    title: 'Test action child 1',
-    description: 'Test action child description',
+    title: 'Number of days without a sport-related injury',
+    description: '',
     content: 1430712335028,
     nest_level: 1,
-    duration_type: 2,
     type: 1,
     active: true
   });
   Action.create({
     _id: '000000000000000000000004',
-    title: 'Test action child 1',
-    description: 'Test action child description',
+    title: 'Number of days without broken bones from falling',
+    description: '',
     content: 1430712335028,
     nest_level: 2,
-    duration_type: 2,
     type: 1,
     active: true
   });
@@ -97,7 +93,6 @@ Action.find({}).remove(function () {
 //   title: 'Test child action title',
 //   description: 'Test child action description',
 //   content: 1430712335028,
-//   duration_type: 2,
 //   type: 1,
 //   active: true
 // });
