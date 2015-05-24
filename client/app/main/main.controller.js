@@ -52,8 +52,16 @@ angular.module('crmDashboardApp')
         title: $scope.newActionTitle,
         description: $scope.newActionDescription,
         duration_type: $scope.newActionDurationType,
-        type: $scope.newActionType
+        type: $scope.newActionType.value
       });
       $scope.newComment = '';
     };
+    $scope.options = {
+      type: [
+        {'value': 1, 'text': 'Time Since'},
+        // {'value': 2, 'text': 'Time Until'},
+        {'value': 3, 'text': 'Countup'}
+        // {'value': 4, 'text': 'Countdown'}
+    ]};
+    $scope.newActionType = $scope.options.type[0];
   });

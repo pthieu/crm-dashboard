@@ -14,14 +14,14 @@ angular.module('crmDashboardApp')
         return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
           scope.deleteAction = function(e, _action) {
             e.stopPropagation();
-            
+
             var id = _action._id;
             $http.delete('/api/actions', {
               data: {
                 'id': id
               },
               headers: {
-                "Content-Type": "application/json;charset=utf-8"
+                'Content-Type': 'application/json;charset=utf-8'
               } // we need to do this if we want to send params, otherwise we need to do traditional REST in URL
             });
           };
@@ -35,23 +35,28 @@ angular.module('crmDashboardApp')
           scope.findAction = function(_id, _list) {
             scope.actionNode = _.findWhere(_list, {
               _id: _id
-            })
+            });
           };
           scope.findAction(scope.actionId, scope.actionList);
 
-          // Declare and initialize self-invoking function
-          (function calculateTimeSince() {
-            scope.fromNow = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
-            // scope.fromNow = moment().diff(scope.actionNode.content, 'days') // will always output in days
-            $timeout(calculateTimeSince, 1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
-          })();
-
-          scope.newChildAction = function(e, _action) {
+          // Switch case for type of action, we want to show different types of information for each
+          switch(scope.actionNode.type){
+            case 1:
+              // Declare and initialize self-invoking function
+              (function calculateTimeSince() {
+                scope.content = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
+                // scope.content = moment().diff(scope.actionNode.content, 'days') // will always output in days
+                // Below timeout is a recursive algorithm and will keep calling calculateTimeSince() until we stop it
+                $timeout(calculateTimeSince, 1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
+              })();
+              break;
+            case 3:
+              scope.content = scope.actionNode.content;
+              break;
+          }
+          scope.newChildAction = function(e) {
             e.stopPropagation();
           };
-
-
-
 
           // BEGIN datepicker logic
           scope.today = function() {

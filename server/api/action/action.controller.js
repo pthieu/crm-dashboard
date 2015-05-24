@@ -45,8 +45,23 @@ exports.show = function(req, res) {
 
 // Creates a new action in the DB.
 exports.create = function(req, res) {
-  var action = new Action(_.merge({content:(new Date()).getTime(), nest_level:0}, req.body));
-  action.save(req.body, function(err, action) {
+  var action_content; // declaration for now, fill in switch case below 
+  var action_type = req.body.type;
+  switch(action_type){
+    case 1: // Time since
+      action_content = (new Date()).getTime();
+      break;
+    case 2: // Time until
+      break;
+    case 3: // Count
+      action_content = 0 // start count
+      break;
+    case 4: // Countdown
+      break;
+  }
+
+  var action = new Action(_.merge({content: action_content, nest_level:0}, req.body));
+  action.save(function(err, action) {
     if(err) { return handleError(res, err); }
     return res.json(201, action);
   });

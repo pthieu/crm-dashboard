@@ -1,26 +1,28 @@
 <div class="action-node col-md-12">
-  <div class="row action" ng-init="hover=false" ng-click="hover=!hover">
+  <div class="row action" ng-init="hover=true" ng-click="hover=!hover">
     <div class="row">
       <h3 class="col-md-12 title">{{ actionNode.title }}</h3>
     </div>
     <div class="col-md-12 pull-right text-right">
       <div class="row">
-        <h1 class="col-md-12 text-right">{{fromNow}}</h1>
+        <h1 class="col-md-12 text-right">{{content}}</h1>
       </div>
-      <div class="row" ng-show="hover">
-        <button class="btn btn-primary" type="submit" ng-click="newChildAction($event, actionNode)">New Child</button>
+      <!-- BEGIN child creation -->
+      <!-- <div class="row" ng-show="hover">
+        <button class="btn btn-primary" type="submit" ng-click="newChildAction($event, actionNode)">Create Child</button>
         <button class="btn btn-primary" type="submit" ng-click="deleteAction($event, actionNode)">Delete</button>
         <div class="row">
           <div class="col-md-6">
             <p class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-click="$event.stopPropagation();"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
+      <!-- END child creation -->
     </div>
   </div>
   <div class="action-node-wrapper" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
