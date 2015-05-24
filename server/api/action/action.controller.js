@@ -69,11 +69,24 @@ exports.create = function(req, res) {
 
 // Updates an existing action in the DB.
 exports.update = function(req, res) {
+  var actionID = req.body.id; // TODO: maybe try to do some auth here or in the chained routing?
+
   if(req.body._id) { delete req.body._id; }
-  Action.findById(req.params.id, function (err, action) {
+  Action.findById(actionID, function (err, action) {
     if (err) { return handleError(res, err); }
     if(!action) { return res.send(404); }
-    var updated = _.merge(action, req.body);
+    // var updated = _.merge(action, req.body);
+    var updated = action;
+
+    // Different situation depending on type of action
+    switch(action.type){
+      case 1: // Time since
+        updated.content = (new Date()).getTime();
+        break;
+      case 3: // Count
+        updated.content++;
+        break;
+    }
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, action);

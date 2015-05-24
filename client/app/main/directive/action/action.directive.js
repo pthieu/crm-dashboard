@@ -49,13 +49,22 @@ angular.module('crmDashboardApp')
                 // Below timeout is a recursive algorithm and will keep calling calculateTimeSince() until we stop it
                 $timeout(calculateTimeSince, 1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
               })();
+              scope.update_actionNode_text = 'Reset!';
               break;
             case 3:
               scope.content = scope.actionNode.content;
+              scope.update_actionNode_text = 'Increment';
               break;
           }
           scope.newChildAction = function(e) {
             e.stopPropagation();
+          };
+
+          scope.updateActionNode = function (_action) {
+            var id = _action._id;
+            $http.put('/api/actions', {
+              'id': id
+            });
           };
 
           // BEGIN datepicker logic

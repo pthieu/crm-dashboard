@@ -88,6 +88,15 @@ Action.find({}).remove(function () {
     type: 1,
     active: true
   });
+  Action.create({
+    _id: '000000000000000000000005',
+    title: 'Number of inappropriate comments',
+    description: '',
+    content: 0,
+    nest_level: 0,
+    type: 3,
+    active: true
+  });
 });
 // Action.create({
 //   title: 'Test child action title',

@@ -60,7 +60,7 @@ angular.module('crmDashboardApp')
       type: [
         {'value': 1, 'text': 'Time Since'},
         // {'value': 2, 'text': 'Time Until'},
-        {'value': 3, 'text': 'Countup'}
+        {'value': 3, 'text': 'Count'}
         // {'value': 4, 'text': 'Countdown'}
     ]};
     $scope.newActionType = $scope.options.type[0];
