@@ -1,19 +1,20 @@
-<div class="action-node col-md-12">
+<div class="action-node col-md-12" ng-init="edit_mode=false">
   <div class="row action" ng-init="hover=true" ng-click="hover=!hover">
     <div class="row">
       <h3 class="col-md-12 title">{{ actionNode.title }}</h3>
     </div>
     <div class="col-md-12 pull-right text-right">
-      <div class="row vertical-align">
+      <div class="row vertical-align" ng-model="show_action_options" ng-click="$event.stopPropagation(); show_action_options=!show_action_options;" ng-mouseover="show_action_options_label = true" ng-mouseleave="show_action_options_label = false">
         <div class="col-md-7">
-        <div class="action-options">
-          <h6 class="edit-link">(Click to reveal options)</h6>
-          </div>
           <div class="action-options">
-            <button class="btn btn-primary">Edit</button>
+            <h6 class="edit-link" ng-show="show_action_options_label && !show_action_options">(Click to reveal options)</h6>
+            <h6 class="edit-link" ng-show="show_action_options_label && show_action_options">(Click to hide options)</h6>
           </div>
-          <div class="action-options">
-            <button class="btn btn-primary" ng-click="newChildAction(actionNode);">New Child</button>
+          <div class="action-options" ng-show="show_action_options">
+            <button class="btn btn-primary" ng-click="$event.stopPropagation();">Edit</button>
+          </div>
+          <div class="action-options" ng-show="show_action_options">
+            <button class="btn btn-primary" ng-click="edit_mode=!edit_mode; $event.stopPropagation();">New Child</button>
           </div>
         </div>
         <div class="col-md-3">
@@ -23,17 +24,18 @@
           <h6>{{(actionNode.type === 1 && actionNode.content !== 0) ? '('+actionNode_content_to_date+')' : 'Never updated'}}</h6>
         </div>
         <div class="col-md-2 text-left">
-          <button class="btn btn-primary" type="submit" ng-click="updateActionNode(actionNode); $event.preventDefault()">{{update_actionNode_text}}</button>
+          <button class="btn btn-primary" type="submit" ng-click="updateActionNode(actionNode); $event.stopPropagation();">{{update_actionNode_text}}</button>
         </div>
       </div>
-      <form class="comment-form" ng-submit="addChildAction(actionNode)" name="actionForm">
+      <form ng-submit="addChildAction(actionNode)" name="actionForm" ng-show="show_action_options && edit_mode">
         <div class="row">
           <div class="col-md-7 form-group text-left">
             <label>Title:</label>
             <input class="form-control" type="text" ng-model="newActionTitle"></input>
           </div>
-          <div class="col-md-7 text-center">
-            <input class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" value="Create">
+          <div class="col-md-7 text-right">
+              <button class="btn btn-primary" ng-click="show_action_options=false; edit_mode=false; $event.stopPropagation()">Close</button>
+              <button class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" ng-click="$event.stopPropagation();">Create</button>
           </div>
         </div>
       </form>

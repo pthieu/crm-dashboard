@@ -56,11 +56,6 @@ angular.module('crmDashboardApp')
           };
           scope.findAction(scope.actionId, scope.actionList)
 
-          scope.newChildAction = function(e) {
-            e.stopPropagation();
-
-          };
-
           scope.updateActionNode = function (_action) {
             var id = _action._id;
             $http.put('/api/actions', {
@@ -72,6 +67,11 @@ angular.module('crmDashboardApp')
             $http.post('/api/actions/'+_action._id, {
               title: scope.newActionTitle
             });
+
+            // Reset view
+            scope.newActionTitle = '' // Clear input
+            scope.edit_mode = false;
+            scope.show_action_options = false;
           };
           // Switch case for type of action, we want to show different types of information for each
           switch(scope.actionNode.type){
