@@ -93,7 +93,17 @@ Action.find({}).remove(function () {
     title: 'Number of inappropriate comments',
     description: '',
     content: 0,
+    children: ['000000000000000000000006'],
     nest_level: 0,
+    type: 3,
+    active: true
+  });
+  Action.create({
+    _id: '000000000000000000000006',
+    title: 'CHILD OF INAPPROPRIATE COMMENTS',
+    description: '',
+    content: 0,
+    nest_level: 1,
     type: 3,
     active: true
   });

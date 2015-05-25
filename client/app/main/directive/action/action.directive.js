@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('crmDashboardApp')
-  .directive('actionDirective', function($http, $interval, $timeout, RecursionHelper) {
+  .directive('actionDirective', function($http, $interval, $timeout, RecursionHelper, $compile) {
     return {
       scope: {
         actionId: '=', // html:action-node, js:actionNode
@@ -37,8 +37,18 @@ angular.module('crmDashboardApp')
               _id: _id
             });
           };
-          scope.findAction(scope.actionId, scope.actionList);
+          scope.findAction(scope.actionId, scope.actionList)
 
+          scope.newChildAction = function(e) {
+            e.stopPropagation();
+          };
+
+          scope.updateActionNode = function (_action) {
+            var id = _action._id;
+            $http.put('/api/actions', {
+              'id': id
+            });
+          };
           // Switch case for type of action, we want to show different types of information for each
           switch(scope.actionNode.type){
             case 1:
@@ -54,18 +64,18 @@ angular.module('crmDashboardApp')
             case 3:
               scope.content = scope.actionNode.content;
               scope.update_actionNode_text = 'Increment';
+              if (scope.actionNode.nest_level>0){
+                $interval(function () {
+                  // console.log(scope.actionList);
+                }, 1000);
+                scope.$watch(function () {
+                  return scope.actionList;
+                }, function (n,o) {
+                  scope.$apply(scope.findAction(scope.actionId, scope.actionList));
+                }, true);
+              }
               break;
           }
-          scope.newChildAction = function(e) {
-            e.stopPropagation();
-          };
-
-          scope.updateActionNode = function (_action) {
-            var id = _action._id;
-            $http.put('/api/actions', {
-              'id': id
-            });
-          };
 
           // BEGIN datepicker logic
           scope.today = function() {

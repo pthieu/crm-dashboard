@@ -3,7 +3,7 @@
 'use strict';
  
 angular.module('crmDashboardApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket, $interval) {
     $scope.newComment = '';
 
     // Grab the initial set of available comments
@@ -35,8 +35,7 @@ angular.module('crmDashboardApp')
       $scope.newComment = '';
     };
 
-
-    // Grab the initial set of available comments
+    // Grab the initial set of available actions
     $http.get('/api/actions').success(function(actions) {
       $scope.actions = actions;
  
@@ -45,6 +44,12 @@ angular.module('crmDashboardApp')
         console.log([event, action, actions]); // TODO: remove this, jshint does not like unused variables
         // This callback is fired after the actions array is updated by the socket listeners
       });
+
+      // $scope.$watch(function () {
+      //   return $scope.actions;
+      // }, function (n,o) {
+      //   debugger;
+      // }, true);
     });
 
     $scope.addAction = function() {
