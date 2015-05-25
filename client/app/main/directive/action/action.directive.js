@@ -32,7 +32,7 @@ angular.module('crmDashboardApp')
           //   });
           // };
           // Find for already called action list
-          scope.findAction = function(_id, _list) {
+          scope.findAction = function(_id, _list, _cb) {
             scope.actionNode = _.findWhere(_list, {
               _id: _id
             });
@@ -52,29 +52,41 @@ angular.module('crmDashboardApp')
           // Switch case for type of action, we want to show different types of information for each
           switch(scope.actionNode.type){
             case 1:
+              // This is for root-level initial load
               // Declare and initialize self-invoking function
               (function calculateTimeSince() {
                 scope.content = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
                 // scope.content = moment().diff(scope.actionNode.content, 'days') // will always output in days
-                // Below timeout is a recursive algorithm and will keep calling calculateTimeSince() until we stop it
-                $timeout(calculateTimeSince, 1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
+                scope.actionNode_content_to_date = moment(scope.actionNode.content).format('llll');
+                // Below timeout is a recursive algorithm and will keep calling calculateTimeSince() until we stop it.
+                // Purpose of this is to update the text of the timed actionNodes every minute (because text will change depending on how long it's been)
+                $timeout(calculateTimeSince, 60*1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
               })();
-              scope.update_actionNode_text = 'Reset!';
+              scope.update_actionNode_text = 'Reset';
               break;
             case 3:
               scope.content = scope.actionNode.content;
               scope.update_actionNode_text = 'Increment';
-              if (scope.actionNode.nest_level>0){
-                $interval(function () {
-                  // console.log(scope.actionList);
-                }, 1000);
-                scope.$watch(function () {
-                  return scope.actionList;
-                }, function (n,o) {
-                  scope.$apply(scope.findAction(scope.actionId, scope.actionList));
-                }, true);
-              }
               break;
+          }
+
+          // Set up a watcher for nest_level>0 to update scope.content with scope.actionNode.content whenever that gets changed
+          // For some reason, the nested elements don't update when socket is called
+          if (scope.actionNode.nest_level>0){
+            scope.$watch(function () {
+              return scope.actionList;
+            }, function (n,o) {
+              scope.findAction(scope.actionId, scope.actionList);
+              switch(scope.actionNode.type){
+                case 1:
+                  scope.content = moment(scope.actionNode.content).fromNow(true);
+                  scope.actionNode_content_to_date = moment(scope.actionNode.content).format('llll');
+                  break;
+                case 3:
+                  scope.content = scope.actionNode.content;
+                  break;
+              }
+            }, true);
           }
 
           // BEGIN datepicker logic

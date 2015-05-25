@@ -25,14 +25,14 @@
   align-items: center;
   >[class^="col-"],
   >[class*=" col-"] {
-    display: flex;
-    align-items: center;
+    display: block;
+    /*align-items: center;*/
     /* Align the flex-items vertically */
-    
     justify-content: center;
     /* Optional, to align inner flex-items horizontally within the column  */
-    >h1{
-      flex-grow: 1;
+    >h1,h6{
+      margin:0;
     }
+    
   }
 }
