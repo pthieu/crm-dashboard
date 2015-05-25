@@ -67,6 +67,48 @@ exports.create = function(req, res) {
   });
 };
 
+// Creates a new child action in the DB.
+exports.createChild = function(req, res) {
+  var actionID = req.params.id; // TODO: maybe try to do some auth here or in the chained routing?
+  var childTitle = req.body.title;
+  
+  Action.findById(actionID).exec(function (err, action) {
+    if(err) { return handleError(res, err); }
+
+    // Hold value of parent action in scope
+    var parentAction = action;
+
+    // Set child Action data
+    // childAction.title = childTitle;
+    // childAction.nest_level = parentAction.nest_level+1;
+
+    // Declare and initialize child action and fields. 
+    var childFields = _.merge({}, parentAction.toJSON(), {'title': childTitle, 'nest_level':parentAction.nest_level+1});
+
+    delete childFields._id; // Merge will take parent's id, so clear it, the save() will auto insert newest one
+    childFields.children = []; // Merge will take any of the parent's children so we should clear it
+
+    // Just set to 0 for now, don't know if we want to auto-trigger update on the timed actions
+    switch(childFields.type){
+      case 1:
+        childFields.content = 0
+        break;
+      case 3:
+        childFields.content = 0
+        break;
+    }
+    var childAction = new Action(childFields);
+    childAction.save(function (err, action) {
+      if(err) { return handleError(res, err); }
+      // Add newly created child's id to parent's children array
+      parentAction.children.push(action._id);
+      parentAction.save(function (err, action) {
+        return res.json(201, action);
+      });
+    });
+  });
+};
+
 // Updates an existing action in the DB.
 exports.update = function(req, res) {
   var actionID = req.body.id; // TODO: maybe try to do some auth here or in the chained routing?

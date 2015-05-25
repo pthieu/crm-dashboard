@@ -70,43 +70,43 @@ Action.find({}).remove(function () {
     type: 1,
     active: true
   });
-  Action.create({
-    _id: '000000000000000000000003',
-    title: 'Number of days without a sport-related injury',
-    description: '',
-    content: 1430712335028,
-    nest_level: 1,
-    type: 1,
-    active: true
-  });
-  Action.create({
-    _id: '000000000000000000000004',
-    title: 'Number of days without broken bones from falling',
-    description: '',
-    content: 1430712335028,
-    nest_level: 2,
-    type: 1,
-    active: true
-  });
-  Action.create({
-    _id: '000000000000000000000005',
-    title: 'Number of inappropriate comments',
-    description: '',
-    content: 0,
-    children: ['000000000000000000000006'],
-    nest_level: 0,
-    type: 3,
-    active: true
-  });
-  Action.create({
-    _id: '000000000000000000000006',
-    title: 'CHILD OF INAPPROPRIATE COMMENTS',
-    description: '',
-    content: 0,
-    nest_level: 1,
-    type: 3,
-    active: true
-  });
+  // Action.create({
+  //   _id: '000000000000000000000003',
+  //   title: 'Number of days without a sport-related injury',
+  //   description: '',
+  //   content: 1430712335028,
+  //   nest_level: 1,
+  //   type: 1,
+  //   active: true
+  // });
+  // Action.create({
+  //   _id: '000000000000000000000004',
+  //   title: 'Number of days without broken bones from falling',
+  //   description: '',
+  //   content: 1430712335028,
+  //   nest_level: 2,
+  //   type: 1,
+  //   active: true
+  // });
+  // Action.create({
+  //   _id: '000000000000000000000005',
+  //   title: 'Number of inappropriate comments',
+  //   description: '',
+  //   content: 0,
+  //   children: ['000000000000000000000006'],
+  //   nest_level: 0,
+  //   type: 3,
+  //   active: true
+  // });
+  // Action.create({
+  //   _id: '000000000000000000000006',
+  //   title: 'CHILD OF INAPPROPRIATE COMMENTS',
+  //   description: '',
+  //   content: 0,
+  //   nest_level: 1,
+  //   type: 3,
+  //   active: true
+  // });
 });
 // Action.create({
 //   title: 'Test child action title',

@@ -12,6 +12,23 @@ angular.module('crmDashboardApp')
       restrict: 'E',
       compile: function(element) {
         return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+          scope.options = {
+            type: [
+              {'value': 1, 'text': 'Time Since'},
+              // {'value': 2, 'text': 'Time Until'},
+              {'value': 3, 'text': 'Count'}
+              // {'value': 4, 'text': 'Countdown'}
+          ]};
+          scope.newActionType = scope.options.type[0];
+
+          // Utility function to see if child exists within array
+          scope.childExists = function (_id, _list) {
+            var exists = (_.findIndex(_list, function (_action) {
+              return _action._id === _id;
+            }) >= 0); // Returns true if index found (>=0), else -1
+            return exists;
+          };
+
           scope.deleteAction = function(e, _action) {
             e.stopPropagation();
 
@@ -41,12 +58,19 @@ angular.module('crmDashboardApp')
 
           scope.newChildAction = function(e) {
             e.stopPropagation();
+
           };
 
           scope.updateActionNode = function (_action) {
             var id = _action._id;
             $http.put('/api/actions', {
               'id': id
+            });
+          };
+
+          scope.addChildAction = function (_action) {
+            $http.post('/api/actions/'+_action._id, {
+              title: scope.newActionTitle
             });
           };
           // Switch case for type of action, we want to show different types of information for each
@@ -57,7 +81,7 @@ angular.module('crmDashboardApp')
               (function calculateTimeSince() {
                 scope.content = moment(scope.actionNode.content).fromNow(true); // moment.js will handle output format depending on length of time passed
                 // scope.content = moment().diff(scope.actionNode.content, 'days') // will always output in days
-                scope.actionNode_content_to_date = moment(scope.actionNode.content).format('llll');
+                scope.actionNode_content_to_date = moment(scope.actionNode.content).format('ddd DD/MM/YYYY h:mm a');
                 // Below timeout is a recursive algorithm and will keep calling calculateTimeSince() until we stop it.
                 // Purpose of this is to update the text of the timed actionNodes every minute (because text will change depending on how long it's been)
                 $timeout(calculateTimeSince, 60*1000); // we use $timeout because it syncs the view with the model and updates with $apply. setTimeout will not work here.
@@ -80,7 +104,7 @@ angular.module('crmDashboardApp')
               switch(scope.actionNode.type){
                 case 1:
                   scope.content = moment(scope.actionNode.content).fromNow(true);
-                  scope.actionNode_content_to_date = moment(scope.actionNode.content).format('llll');
+                  scope.actionNode_content_to_date = moment(scope.actionNode.content).format('ddd DD/MM/YYYY h:mm a');
                   break;
                 case 3:
                   scope.content = scope.actionNode.content;

@@ -5,16 +5,38 @@
     </div>
     <div class="col-md-12 pull-right text-right">
       <div class="row vertical-align">
-        <div class="col-md-10">
-          <h1>{{content}}</h1>
-          <h6>{{(actionNode.type==1)?'('+actionNode_content_to_date+')':NULL}}</h6>
+        <div class="col-md-7">
+        <div class="action-options">
+          <h6 class="edit-link">(Click to reveal options)</h6>
+          </div>
+          <div class="action-options">
+            <button class="btn btn-primary">Edit</button>
+          </div>
+          <div class="action-options">
+            <button class="btn btn-primary" ng-click="newChildAction(actionNode);">New Child</button>
+          </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
+          <!-- Handle situation where we are getting 0 for time because it's a new child, output N/A in this case. scope.content is going to be some weird value -->
+          <h1>{{(actionNode.type === 1 && actionNode.content === 0) ? 'N/A' : content}}</h1>
+          <!-- Only show the date if it's a timed action and content != 0, which means new child, actionNode_content_to_date is going to be a weird value -->
+          <h6>{{(actionNode.type === 1 && actionNode.content !== 0) ? '('+actionNode_content_to_date+')' : 'Never updated'}}</h6>
+        </div>
+        <div class="col-md-2 text-left">
           <button class="btn btn-primary" type="submit" ng-click="updateActionNode(actionNode); $event.preventDefault()">{{update_actionNode_text}}</button>
         </div>
       </div>
-      <div class="row">
-      </div>
+      <form class="comment-form" ng-submit="addChildAction(actionNode)" name="actionForm">
+        <div class="row">
+          <div class="col-md-7 form-group text-left">
+            <label>Title:</label>
+            <input class="form-control" type="text" ng-model="newActionTitle"></input>
+          </div>
+          <div class="col-md-7 text-center">
+            <input class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" value="Create">
+          </div>
+        </div>
+      </form>
       <!-- BEGIN child creation -->
       <!-- <div class="row" ng-show="hover">
         <button class="btn btn-primary" type="submit" ng-click="newChildAction($event, actionNode)">Create Child</button>
@@ -35,6 +57,6 @@
   </div>
   <div class="action-node-wrapper" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
     <!-- <div class="row" ng-repeat="child in actionNode.children"  ng-if="actionNode.children.length > 0" ng-style="{'margin-left': ({{actionNode.nest_level}}+1)*30+'px'}"> -->
-    <action-directive action-ID="child" action-list="actionList" />
+    <action-directive action-ID="child" action-list="actionList" ng-if="childExists(child, actionList)"/>
   </div>
 </div>
