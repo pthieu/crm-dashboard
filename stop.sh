@@ -1,0 +1,1 @@
+forever stop ~/www/crm-dashboard/dist/server/app.js
