@@ -8,6 +8,7 @@ if [ ! -d "$LOG_DIR" ]; then
   # Control will enter here if $LOG_DIR exists.
   echo "NOTE: $LOG_DIR folder not detected, creating..."
   mkdir -pv "$LOG_DIR"
+  touch ~/www/crm-dashboard/log/forever.log
 fi
 
 # Invoke the Forever module (to START our Node.js server).
@@ -16,7 +17,7 @@ NODE_ENV=production \
 PORT=9000 \
 forever \
 start \
--al log/forever.log \
+-al ~/www/crm-dashboard/log/forever.log \
 -ao log/out.log \
 -ae log/err.log \
 ~/www/crm-dashboard/dist/server/app.js
