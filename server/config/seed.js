@@ -50,26 +50,26 @@ var Action = require('../api/action/action.model');
 // });
 
 Action.find({}).remove(function () {
-  Action.create({
-    _id: '000000000000000000000001',
-    title: 'Number of days without an accident',
-    description: '',
-    content: 1430712335028,
-    children:['000000000000000000000002', '000000000000000000000003'],
-    nest_level: 0,
-    type: 1,
-    active: true
-  });
-  Action.create({
-    _id: '000000000000000000000002',
-    title: 'Number of days without a falling',
-    description: '',
-    content: 1430712335028,
-    children: ['000000000000000000000004'],
-    nest_level: 1,
-    type: 1,
-    active: true
-  });
+  // Action.create({
+  //   _id: '000000000000000000000001',
+  //   title: 'Number of days without an accident',
+  //   description: '',
+  //   content: 1430712335028,
+  //   children:['000000000000000000000002', '000000000000000000000003'],
+  //   nest_level: 0,
+  //   type: 1,
+  //   active: true
+  // });
+  // Action.create({
+  //   _id: '000000000000000000000002',
+  //   title: 'Number of days without a falling',
+  //   description: '',
+  //   content: 1430712335028,
+  //   children: ['000000000000000000000004'],
+  //   nest_level: 1,
+  //   type: 1,
+  //   active: true
+  // });
   // Action.create({
   //   _id: '000000000000000000000003',
   //   title: 'Number of days without a sport-related injury',
@@ -88,25 +88,44 @@ Action.find({}).remove(function () {
   //   type: 1,
   //   active: true
   // });
-  // Action.create({
-  //   _id: '000000000000000000000005',
-  //   title: 'Number of inappropriate comments',
-  //   description: '',
-  //   content: 0,
-  //   children: ['000000000000000000000006'],
-  //   nest_level: 0,
-  //   type: 3,
-  //   active: true
-  // });
-  // Action.create({
-  //   _id: '000000000000000000000006',
-  //   title: 'CHILD OF INAPPROPRIATE COMMENTS',
-  //   description: '',
-  //   content: 0,
-  //   nest_level: 1,
-  //   type: 3,
-  //   active: true
-  // });
+  Action.create({
+    _id: '000000000000000000000005',
+    title: 'Number of inappropriate comments',
+    description: '',
+    content: 0,
+    children: ['000000000000000000000006','000000000000000000000007'],
+    nest_level: 0,
+    type: 3,
+    active: true
+  });
+  Action.create({
+    _id: '000000000000000000000006',
+    title: 'CHILD 1',
+    description: '',
+    content: 0,
+    children:['000000000000000000000008'],
+    nest_level: 1,
+    type: 3,
+    active: true
+  });
+  Action.create({
+    _id: '000000000000000000000007',
+    title: 'CHILD 2',
+    description: '',
+    content: 0,
+    nest_level: 1,
+    type: 3,
+    active: true
+  });
+  Action.create({
+    _id: '000000000000000000000008',
+    title: 'CHILD 1-1',
+    description: '',
+    content: 0,
+    nest_level: 2,
+    type: 3,
+    active: true
+  });
 });
 // Action.create({
 //   title: 'Test child action title',

@@ -3,7 +3,7 @@
     <div class="row">
       <h3 class="col-md-12" ng-click="actionNode_expanded=!actionNode_expanded"><span class="glyphicon" ng-class="{'glyphicon-chevron-down':actionNode_expanded, 'glyphicon-chevron-right':!actionNode_expanded}"></span> {{ actionNode.title }}</h3>
     </div>
-    <div class="col-md-12 pull-right text-right">
+    <div class="col-xs-12 pull-right text-right">
       <div class="row vertical-align">
         <div class="col-md-6" ng-model="show_action_options" ng-click="$event.stopPropagation(); show_action_options=true;" ng-mouseover="show_action_options_label = true" ng-mouseleave="show_action_options_label = false">
           <div class="action-options">
@@ -24,10 +24,10 @@
           <!-- Handle situation where we are getting 0 for time because it's a new child, output N/A in this case. scope.content is going to be some weird value -->
           <h1>{{(actionNode.type === 1 && actionNode.content === 0) ? 'N/A' : content}}</h1>
           <!-- Only show the date if it's a timed action and content != 0, which means new child, actionNode_content_to_date is going to be a weird value -->
-          <h6>{{(actionNode.type === 1 && actionNode.content !== 0) ? '('+actionNode_content_to_date+')' : 'Never updated'}}</h6>
+          <h6>{{(actionNode.type === 3)?'':(actionNode.type === 1 && actionNode.content !== 0) ? '('+actionNode_content_to_date+')' : 'Never updated'}}</h6>
         </div>
         <div class="col-md-2 text-left">
-          <button class="btn btn-primary" type="submit" ng-click="updateActionNode(actionNode); $event.stopPropagation();">{{update_actionNode_text}}</button>
+          <button class="btn btn-primary" ng-hide="actionNode.children.length>0" ng-click="updateActionNode(actionNode); $event.stopPropagation();">{{update_actionNode_text}}</button>
         </div>
       </div>
       <div name="actionForm" ng-show="show_action_options && (edit_mode || newChild_mode)">

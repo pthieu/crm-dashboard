@@ -26,6 +26,46 @@ Action.schema.pre('remove', function (next) {
   next();
 });
 
+Action.schema.post('save', function (action) {
+  var saved = action;
+  Action.findOne({children:saved._id}, function (err, parent) {
+    if (err) { return console.log(err); }
+    // If no parent found, just return, this affects ALL types of actions
+    // NOTE: there must always be a parent preset for this post hook to occur, so create-type saves will just return.
+    if (!parent) return;
+
+    if (saved.type === 1){
+      // If timed action, update parent's timer with same date
+      parent.content = saved.content;
+      parent.save(function (err) {
+        if (err) { return console.log(err); }
+        return;
+      });
+    }
+    else if (saved.type === 3){
+      // If it's a counter, look for all children (plus siblings, no children of children) and update parent with total number
+      Action.find({'_id': {$in: parent.children}}, function (err, children) {
+        if (err) { return console.log(err); }
+
+        var total_count = 0;
+        children.forEach(function (child) {
+          total_count += child.content;
+        });
+
+        if(parent.content === total_count){
+          return; // If parent total count is the same as total sum of all children, then just return, this probably should never happen after an update
+        }
+        else{
+          parent.content = total_count;
+          parent.save(function (err) {
+            if (err) { return console.log(err); }
+          });
+        }
+      });
+    }
+  });
+});
+
 // Get list of actions
 exports.index = function(req, res) {
   Action.find(function (err, actions) {
@@ -49,7 +89,8 @@ exports.create = function(req, res) {
   var action_type = req.body.type;
   switch(action_type){
     case 1: // Time since
-      action_content = (new Date()).getTime();
+      // action_content = (new Date()).getTime();
+      action_content = 0;
       break;
     case 2: // Time until
       break;
