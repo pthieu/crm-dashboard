@@ -20,6 +20,8 @@
 @import 'main/main.less';
 @import 'modal/modal.less';
 // endinjector
+
+@mobile:    ~"only screen and (max-width: 720px)";
 .vertical-align {
   display: flex;
   align-items: center;
@@ -32,6 +34,13 @@
     /* Optional, to align inner flex-items horizontally within the column  */
     >h1,h6{
       margin:0;
+    }
+  }
+  @media @mobile{
+    display:block;
+    >[class^="col-"],
+    >[class*=" col-"] {
+      margin-top:10px;
     }
   }
 }
