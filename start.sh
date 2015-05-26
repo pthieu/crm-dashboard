@@ -19,4 +19,4 @@ start \
 -al log/forever.log \
 -ao log/out.log \
 -ae log/err.log \
-forever stop ~/www/crm-dashboard/dist/server/app.js
+~/www/crm-dashboard/dist/server/app.js
