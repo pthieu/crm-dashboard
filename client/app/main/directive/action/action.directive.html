@@ -1,11 +1,11 @@
-<div class="action-node col-md-12" ng-init="edit_mode=false; newChild_mode=false;">
+<div class="action-node col-md-12">
   <div class="row action" ng-init="hover=true" ng-click="hover=!hover">
     <div class="row">
-      <h3 class="col-md-12 title">{{ actionNode.title }}</h3>
+      <h3 class="col-md-12" ng-click="actionNode_expanded=!actionNode_expanded"><span class="glyphicon" ng-class="{'glyphicon-chevron-down':actionNode_expanded, 'glyphicon-chevron-right':!actionNode_expanded}"></span> {{ actionNode.title }}</h3>
     </div>
     <div class="col-md-12 pull-right text-right">
-      <div class="row vertical-align" ng-model="show_action_options" ng-click="$event.stopPropagation(); show_action_options=!show_action_options;" ng-mouseover="show_action_options_label = true" ng-mouseleave="show_action_options_label = false">
-        <div class="col-md-6">
+      <div class="row vertical-align">
+        <div class="col-md-6" ng-model="show_action_options" ng-click="$event.stopPropagation(); show_action_options=true;" ng-mouseover="show_action_options_label = true" ng-mouseleave="show_action_options_label = false">
           <div class="action-options">
             <h6 class="edit-link" ng-show="show_action_options_label && !show_action_options">(Click to reveal options)</h6>
             <!-- <h6 class="edit-link" ng-show="show_action_options_label && show_action_options">(Click to hide options)</h6> -->
@@ -33,7 +33,7 @@
       <div name="actionForm" ng-show="show_action_options && (edit_mode || newChild_mode)">
         <div class="row">
           <div class="col-md-7 form-group text-left">
-            <label>Title:</label>
+            <label>{{(edit_mode === true)?'Edit':(newChild_mode === true)?'New':''}} Title:</label>
             <input class="form-control" type="text" ng-model="newActionTitle"></input>
           </div>
           <div class="col-md-7 text-right">
@@ -61,7 +61,7 @@
       <!-- END child creation -->
     </div>
   </div>
-  <div class="action-node-wrapper" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
+  <div class="action-node-wrapper" ng-show="actionNode_expanded" ng-repeat="child in actionNode.children" ng-if="actionNode.children.length > 0">
     <!-- <div class="row" ng-repeat="child in actionNode.children"  ng-if="actionNode.children.length > 0" ng-style="{'margin-left': ({{actionNode.nest_level}}+1)*30+'px'}"> -->
     <action-directive action-ID="child" action-list="actionList" ng-if="childExists(child, actionList)"/>
   </div>

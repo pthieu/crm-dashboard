@@ -12,6 +12,9 @@ angular.module('crmDashboardApp')
       restrict: 'E',
       compile: function(element) {
         return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+          scope.edit_mode = false;
+          scope.newChild_mode = false;
+          scope.actionNode_expanded = true;
           scope.options = {
             type: [
               {'value': 1, 'text': 'Time Since'},
