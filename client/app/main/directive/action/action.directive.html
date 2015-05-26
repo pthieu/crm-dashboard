@@ -1,23 +1,26 @@
-<div class="action-node col-md-12" ng-init="edit_mode=false">
+<div class="action-node col-md-12" ng-init="edit_mode=false; newChild_mode=false;">
   <div class="row action" ng-init="hover=true" ng-click="hover=!hover">
     <div class="row">
       <h3 class="col-md-12 title">{{ actionNode.title }}</h3>
     </div>
     <div class="col-md-12 pull-right text-right">
       <div class="row vertical-align" ng-model="show_action_options" ng-click="$event.stopPropagation(); show_action_options=!show_action_options;" ng-mouseover="show_action_options_label = true" ng-mouseleave="show_action_options_label = false">
-        <div class="col-md-7">
+        <div class="col-md-6">
           <div class="action-options">
             <h6 class="edit-link" ng-show="show_action_options_label && !show_action_options">(Click to reveal options)</h6>
-            <h6 class="edit-link" ng-show="show_action_options_label && show_action_options">(Click to hide options)</h6>
+            <!-- <h6 class="edit-link" ng-show="show_action_options_label && show_action_options">(Click to hide options)</h6> -->
           </div>
           <div class="action-options" ng-show="show_action_options">
-            <button class="btn btn-primary" ng-click="$event.stopPropagation();">Edit</button>
+            <button class="btn btn-warning" ng-click="disableAllOptions($event);">Hide</button>
           </div>
           <div class="action-options" ng-show="show_action_options">
-            <button class="btn btn-primary" ng-click="edit_mode=!edit_mode; $event.stopPropagation();">New Child</button>
+            <button class="btn btn-primary" ng-click="enableEditMode($event);">Edit</button>
+          </div>
+          <div class="action-options" ng-show="show_action_options">
+            <button class="btn btn-primary" ng-click="enableNewChildMode(); $event.stopPropagation();">New Child</button>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <!-- Handle situation where we are getting 0 for time because it's a new child, output N/A in this case. scope.content is going to be some weird value -->
           <h1>{{(actionNode.type === 1 && actionNode.content === 0) ? 'N/A' : content}}</h1>
           <!-- Only show the date if it's a timed action and content != 0, which means new child, actionNode_content_to_date is going to be a weird value -->
@@ -27,18 +30,19 @@
           <button class="btn btn-primary" type="submit" ng-click="updateActionNode(actionNode); $event.stopPropagation();">{{update_actionNode_text}}</button>
         </div>
       </div>
-      <form ng-submit="addChildAction(actionNode)" name="actionForm" ng-show="show_action_options && edit_mode">
+      <div name="actionForm" ng-show="show_action_options && (edit_mode || newChild_mode)">
         <div class="row">
           <div class="col-md-7 form-group text-left">
             <label>Title:</label>
             <input class="form-control" type="text" ng-model="newActionTitle"></input>
           </div>
           <div class="col-md-7 text-right">
-              <button class="btn btn-primary" ng-click="show_action_options=false; edit_mode=false; $event.stopPropagation()">Close</button>
-              <button class="btn btn-primary" type="submit" ng-disabled="actionForm.$invalid" ng-click="$event.stopPropagation();">Create</button>
+              <button class="btn btn-primary" ng-click="show_action_options=false; edit_mode=false; newChild_mode=false; $event.stopPropagation()">Close</button>
+              <button class="btn btn-success" type="submit" ng-disabled="actionForm.$invalid" ng-show="newChild_mode" ng-click="addChildAction(actionNode); $event.stopPropagation();">Create</button>
+              <button class="btn btn-success" ng-disabled="actionForm.$invalid" ng-show="edit_mode" ng-click="editActionNode(actionNode); $event.stopPropagation();">Update</button>
           </div>
         </div>
-      </form>
+      </div>
       <!-- BEGIN child creation -->
       <!-- <div class="row" ng-show="hover">
         <button class="btn btn-primary" type="submit" ng-click="newChildAction($event, actionNode)">Create Child</button>

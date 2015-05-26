@@ -109,7 +109,7 @@ exports.createChild = function(req, res) {
   });
 };
 
-// Updates an existing action in the DB.
+// Resets/increments an existing action in the DB.
 exports.update = function(req, res) {
   var actionID = req.body.id; // TODO: maybe try to do some auth here or in the chained routing?
 
@@ -130,6 +130,23 @@ exports.update = function(req, res) {
         break;
     }
     updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, action);
+    });
+  });
+};
+
+exports.edit = function(req, res) {
+  var actionID = req.params.id; // TODO: maybe try to do some auth here or in the chained routing?
+  var actionTitle = req.body.title;
+
+  if(req.body._id) { delete req.body._id; }
+  Action.findById(actionID, function (err, action) {
+    if (err) { return handleError(res, err); }
+    if(!action) { return res.send(404); }
+    var edited = _.merge(action, req.body);
+
+    edited.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, action);
     });

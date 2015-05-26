@@ -56,13 +56,6 @@ angular.module('crmDashboardApp')
           };
           scope.findAction(scope.actionId, scope.actionList)
 
-          scope.updateActionNode = function (_action) {
-            var id = _action._id;
-            $http.put('/api/actions', {
-              'id': id
-            });
-          };
-
           scope.addChildAction = function (_action) {
             $http.post('/api/actions/'+_action._id, {
               title: scope.newActionTitle
@@ -73,6 +66,52 @@ angular.module('crmDashboardApp')
             scope.edit_mode = false;
             scope.show_action_options = false;
           };
+
+          // For changing fields of actionNode
+          scope.editActionNode = function (_action) {
+            var title = scope.newActionTitle;
+
+            $http.patch('/api/actions/'+_action._id, {
+              'title': title
+            });
+
+            // Reset view
+            scope.newActionTitle = '' // Clear input
+            scope.edit_mode = false;
+            scope.newChild_mode = false;
+            scope.show_action_options = false;
+          };
+
+          // For reset/incrementing actionNode.content
+          scope.updateActionNode = function (_action) {
+            var id = _action._id;
+            $http.put('/api/actions', {
+              'id': id
+            });
+          };
+
+          scope.disableAllOptions = function (event) {
+            event.stopPropagation();
+
+            scope.show_action_options = false;
+            scope.edit_mode = false;
+            scope.newChild_mode = false;
+            scope.newActionTitle = '';
+          };
+
+          scope.enableEditMode = function (event) {
+            event.stopPropagation();
+
+            scope.edit_mode = !scope.edit_mode;
+            scope.newChild_mode=false;
+            scope.newActionTitle = scope.actionNode.title;
+          };
+          scope.enableNewChildMode = function () {
+            scope.newActionTitle = '';
+            scope.newChild_mode = !scope.newChild_mode;
+            scope.edit_mode = false;
+          };
+
           // Switch case for type of action, we want to show different types of information for each
           switch(scope.actionNode.type){
             case 1:
