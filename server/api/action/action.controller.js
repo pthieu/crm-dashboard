@@ -34,7 +34,7 @@ Action.schema.post('save', function (action) {
     // NOTE: there must always be a parent preset for this post hook to occur, so create-type saves will just return.
     if (!parent) return;
 
-    if (saved.type === 1){
+    if (saved.type === 1 && saved.content !== 0){
       // If timed action, update parent's timer with same date
       parent.content = saved.content;
       parent.save(function (err) {
@@ -52,7 +52,7 @@ Action.schema.post('save', function (action) {
           total_count += child.content;
         });
 
-        if(parent.content === total_count){
+        if(parent.content >= total_count){
           return; // If parent total count is the same as total sum of all children, then just return, this probably should never happen after an update
         }
         else{
